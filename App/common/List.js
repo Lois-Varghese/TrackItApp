@@ -1,5 +1,5 @@
-import React from 'react';
-import {SectionList} from 'react-native';
+import React from "react";
+import { SectionList } from "react-native";
 
 export const List = ({
   sections,

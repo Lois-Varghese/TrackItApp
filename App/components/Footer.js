@@ -1,14 +1,14 @@
-import React, {useContext} from 'react';
-import {TouchableOpacity, StyleSheet, Text} from 'react-native';
-import colors from '../config/colors';
-import {AppContext} from '../util/AppContext';
-import AppModal from '../common/Modal';
+import React, { useContext } from "react";
+import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import colors from "../config/colors";
+import { AppContext } from "../util/AppContext";
+import AppModal from "../common/Modal";
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.headerColor,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: 56,
     width: 56,
     borderRadius: 20,
@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 30,
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
 export default function Footer() {
-  const {openModal, setOpenModal, setModalType} = useContext(AppContext);
+  const { openModal, setOpenModal, setModalType } = useContext(AppContext);
   return (
     <>
       {openModal === true ? (
@@ -32,8 +32,9 @@ export default function Footer() {
         <TouchableOpacity
           style={styles.container}
           onPress={() => {
-            setOpenModal(true), setModalType('add');
-          }}>
+            setOpenModal(true), setModalType("add");
+          }}
+        >
           <Text style={styles.footerText}>+</Text>
         </TouchableOpacity>
       )}

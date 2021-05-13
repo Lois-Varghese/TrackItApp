@@ -1,14 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import uuid from 'react-native-uuid';
-import moment from 'moment';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from "react-native-uuid";
+import moment from "moment";
 
-export const saveItem = async ({formData, setTrackItInfo, trackItInfo}) => {
+export const saveItem = async ({ formData, setTrackItInfo, trackItInfo }) => {
   try {
     const amount = formData.amount;
     const desc = formData.desc;
     const type = formData.type;
     const date = formData.date;
-    const existingData = await AsyncStorage.getItem('trackItData');
+    const existingData = await AsyncStorage.getItem("trackItData");
     const existingDataParsed = JSON.parse(existingData);
     const id = uuid.v4();
     const itemRecord = {
@@ -20,43 +20,43 @@ export const saveItem = async ({formData, setTrackItInfo, trackItInfo}) => {
     };
     const updatedFormData = [...existingDataParsed, itemRecord].sort((a, b) => {
       return (
-        moment(b.date).format('MMMM D, YYYY') -
-        moment(a.date).format('MMMM D, YYYY')
+        moment(b.date).format("MMMM D, YYYY") -
+        moment(a.date).format("MMMM D, YYYY")
       );
     });
     const sortedData = [...trackItInfo.concat(itemRecord)].sort((a, b) => {
       return (
-        moment(b.date).format('MMMM D, YYYY') -
-        moment(a.date).format('MMMM D, YYYY')
+        moment(b.date).format("MMMM D, YYYY") -
+        moment(a.date).format("MMMM D, YYYY")
       );
     });
-    await AsyncStorage.setItem('trackItData', JSON.stringify(updatedFormData));
+    await AsyncStorage.setItem("trackItData", JSON.stringify(updatedFormData));
     setTrackItInfo(sortedData);
     return true;
   } catch (err) {
-    alert('Could not add the item. Please try again.');
+    alert("Could not add the item. Please try again.");
     return false;
   }
 };
 
-export const convertToSectionDataFormat = appData => {
-  if (appData === null || appData === '[]') {
+export const convertToSectionDataFormat = (appData) => {
+  if (appData === null || appData === "[]") {
     return [];
   } else {
     let convertedData = [];
 
-    const allDates = appData.map(item => new Date(item.date).toDateString());
+    const allDates = appData.map((item) => new Date(item.date).toDateString());
     const uniqueDates = allDates.filter(
-      (date, index, self) => self.indexOf(date) === index,
+      (date, index, self) => self.indexOf(date) === index
     );
     const uniqueDatesDescending = uniqueDates.sort((a, b) => {
       return new Date(b) - new Date(a);
     });
 
-    uniqueDatesDescending.forEach(date => {
+    uniqueDatesDescending.forEach((date) => {
       const itemsWithSameDate = appData.filter(
-        item =>
-          new Date(item.date).toDateString() === new Date(date).toDateString(),
+        (item) =>
+          new Date(item.date).toDateString() === new Date(date).toDateString()
       );
 
       convertedData.push({
@@ -69,17 +69,17 @@ export const convertToSectionDataFormat = appData => {
   }
 };
 
-export const calculateIncomeExpense = appData => {
-  if (appData.length === 0 || appData === '[]') {
+export const calculateIncomeExpense = (appData) => {
+  if (appData.length === 0 || appData === "[]") {
     return [0, 0];
   } else {
     const totalIncome = appData
-      .filter(item => item.type === 'Income')
-      .map(item => Number(item.amount))
+      .filter((item) => item.type === "Income")
+      .map((item) => Number(item.amount))
       .reduce((a, b) => a + b, 0);
     const totalExpense = appData
-      .filter(item => item.type === 'Expense')
-      .map(item => Number(item.amount))
+      .filter((item) => item.type === "Expense")
+      .map((item) => Number(item.amount))
       .reduce((a, b) => a + b, 0);
 
     return [totalIncome, totalExpense];
@@ -88,18 +88,20 @@ export const calculateIncomeExpense = appData => {
 
 export const deleteItem = async (id, setTrackItInfo) => {
   try {
-    const trackItData = await AsyncStorage.getItem('trackItData');
+    const trackItData = await AsyncStorage.getItem("trackItData");
     const trackItDataParsed = JSON.parse(trackItData);
 
-    const updatedTrackItData = trackItDataParsed.filter(item => item.id !== id);
+    const updatedTrackItData = trackItDataParsed.filter(
+      (item) => item.id !== id
+    );
     await AsyncStorage.setItem(
-      'trackItData',
-      JSON.stringify(updatedTrackItData),
+      "trackItData",
+      JSON.stringify(updatedTrackItData)
     );
     setTrackItInfo(updatedTrackItData);
     return true;
   } catch (err) {
-    alert('Could not delete the income/expense. Please try again.');
+    alert("Could not delete the income/expense. Please try again.");
     return false;
   }
 };
@@ -109,7 +111,7 @@ export const editItem = async (
   formData,
   trackItInfo,
   setTrackItInfo,
-  setParsedData,
+  setParsedData
 ) => {
   try {
     const amount = formData.amount;
@@ -119,7 +121,7 @@ export const editItem = async (
 
     let editedArray = trackItInfo;
 
-    const indexOfRecordToEdit = trackItInfo.findIndex(item => item.id === id);
+    const indexOfRecordToEdit = trackItInfo.findIndex((item) => item.id === id);
     editedArray[indexOfRecordToEdit] = {
       id,
       amount,
@@ -130,10 +132,10 @@ export const editItem = async (
     setTrackItInfo(editedArray);
     setParsedData(convertToSectionDataFormat(editedArray));
 
-    await AsyncStorage.setItem('trackItData', JSON.stringify(editedArray));
+    await AsyncStorage.setItem("trackItData", JSON.stringify(editedArray));
     return true;
   } catch (err) {
-    alert('Could not edit income/expense. Please try again.');
+    alert("Could not edit income/expense. Please try again.");
     return false;
   }
 };
