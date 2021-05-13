@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import { StyleSheet, TextInput} from 'react-native';
-import colors from '../config/colors';
+import React, { useState } from "react";
+import { StyleSheet, TextInput } from "react-native";
+import colors from "../config/colors";
 
 const styles = StyleSheet.create({
   input: {
@@ -29,7 +29,7 @@ export default function Input({
   return (
     <TextInput
       placeholder={placeholder}
-      style={[styles.input, styleAdd, {borderColor}]}
+      style={[styles.input, styleAdd, { borderColor }]}
       keyboardType={keyboardType}
       value={value}
       onChangeText={onChange}

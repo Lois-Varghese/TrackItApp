@@ -1,16 +1,16 @@
-import React, {useContext} from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
-import colors from '../config/colors';
-import LineSeparator from '../common/LineSeparator';
-import {calculateIncomeExpense} from '../core/itemFunctions';
-import {AppContext} from '../util/AppContext';
+import React, { useContext } from "react";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
+import colors from "../config/colors";
+import LineSeparator from "../common/LineSeparator";
+import { calculateIncomeExpense } from "../core/itemFunctions";
+import { AppContext } from "../util/AppContext";
 
-const screen = Dimensions.get('window');
+const screen = Dimensions.get("window");
 
 export default function Card() {
-  const {trackItInfo} = useContext(AppContext);
+  const { trackItInfo } = useContext(AppContext);
   const [totalIncome, totalExpense] =
-    trackItInfo === '[]' ? [0, 0] : calculateIncomeExpense(trackItInfo);
+    trackItInfo === "[]" ? [0, 0] : calculateIncomeExpense(trackItInfo);
 
   return (
     <View styles={styles.wrapper}>
@@ -35,46 +35,46 @@ export default function Card() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: screen.width,
     backgroundColor: colors.white,
     height: 156,
   },
   container: {
     borderColor: colors.lightGreyColor,
     borderWidth: 1,
-    width: 348,
+    width: screen.width * 0.9,
     height: 128,
     marginTop: 14,
     marginBottom: 14,
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: 8,
-    marginLeft: 35,
+    marginLeft: screen.width * 0.05,
+    marginRight: screen.width * 0.05,
   },
   innerContainer: {
-    width: 174,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: screen.width * 0.4,
+    alignItems: "center",
+    justifyContent: "center",
   },
   innerWrapper: {
-    width: 173,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: screen.width * 0.5,
+    alignItems: "center",
+    justifyContent: "center",
   },
   balanceValue: {
     color: colors.blue,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 4,
   },
   incomeValue: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.green,
     marginBottom: 12,
   },
   expenseValue: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.red,
   },
   text: {
