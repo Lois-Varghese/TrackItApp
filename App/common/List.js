@@ -9,6 +9,8 @@ export const List = ({
 }) => {
   return (
     <SectionList
+      stickySectionHeadersEnabled={false}
+      scrollEnabled={true}
       sections={sections}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}

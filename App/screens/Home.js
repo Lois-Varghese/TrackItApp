@@ -1,37 +1,70 @@
-import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import colors from "../config/colors";
-import Card from "../components/Card";
-import ListItems from "../components/ListItems";
-import Footer from "../components/Footer";
-
+import "react-native-gesture-handler";
+import React, { useEffect, useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView, StyleSheet, StatusBar } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { AppContext } from "../util/AppContext";
+import { InnerHome } from "./InnerHome";
+import Header from "../components/Header";
+import colors from "../config/colors";
 
-const screen = Dimensions.get("window");
+const Stack = createStackNavigator();
+
+const screenNames = {
+  home: "Home",
+};
 
 const styles = StyleSheet.create({
-  footerWrapper: {
-    paddingLeft: screen.width * 0.42,
-    backgroundColor: colors.greyColor,
+  headerContainer: {
+    flex: 0,
+    backgroundColor: colors.headerColor,
   },
-  viewStyle: {
+  footerContainer: {
+    flex: 1,
     backgroundColor: colors.greyColor,
-    height: screen.height,
   },
 });
 
-export const Home = ({ appData }) => {
+export const Home = () => {
   const { setTrackItInfo } = useContext(AppContext);
+
   useEffect(() => {
-    setTrackItInfo(appData);
-  }, [appData]);
+    const fetchAppData = async () => {
+      try {
+        const trackItData = await AsyncStorage.getItem("trackItData");
+        if (trackItData !== null) {
+          const trackItDataParsed = JSON.parse(trackItData);
+          setTrackItInfo(trackItDataParsed);
+        } else {
+          await AsyncStorage.setItem("trackItData", JSON.stringify([]));
+          setTrackItInfo([]);
+        }
+      } catch (e) {
+        alert("Something went wrong. Please try again.");
+      }
+    };
+    fetchAppData();
+  }, []);
   return (
-    <View style={styles.viewStyle}>
-      <Card />
-      {appData !== [] && <ListItems />}
-      <View style={styles.footerWrapper}>
-        <Footer />
-      </View>
-    </View>
+    <>
+      <SafeAreaView style={styles.headerContainer} />
+      <SafeAreaView style={styles.footerContainer}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={colors.headerColor}
+        />
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={screenNames.home}
+            screenOptions={{
+              header: (props) => <Header {...props} />,
+            }}
+          >
+            <Stack.Screen name={screenNames.home} component={InnerHome} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </>
   );
 };

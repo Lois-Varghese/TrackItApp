@@ -1,31 +1,23 @@
 import React, { useContext } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import colors from "../config/colors";
 import { AppContext } from "../util/AppContext";
-import { deleteItem } from "../core/itemFunctions";
 import dayjs from "dayjs";
-
-const screen = Dimensions.get("window");
+import Icon from "react-native-remix-icon";
 
 export default function ViewExpense() {
   const {
     trackItInfo,
     setOpenModal,
     listItem,
-    setTrackItInfo,
     setModalType,
     setEditId,
     setFormData,
+    deleteItem,
   } = useContext(AppContext);
 
   const onEdit = (id) => {
-    if (trackItInfo !== "[]" || trackItInfo.length > 0) {
+    if (trackItInfo) {
       const editedData = trackItInfo.filter((item) => item.id === id)[0];
       setFormData({
         type: editedData.type,
@@ -44,7 +36,7 @@ export default function ViewExpense() {
             setOpenModal(false);
           }}
         >
-          <Text style={styles.closeButton}>X</Text>
+          <Icon name="close-fill" size="30" color={colors.lightBlack} />
         </TouchableOpacity>
       </View>
       <Text
@@ -69,7 +61,7 @@ export default function ViewExpense() {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          deleteItem(listItem.id, setTrackItInfo);
+          deleteItem(listItem.id);
           setOpenModal(false);
         }}
       >
@@ -80,55 +72,50 @@ export default function ViewExpense() {
 }
 
 const styles = StyleSheet.create({
-  closeButton: {
-    width: 20,
-    height: 20,
-    fontWeight: "bold",
-    marginLeft: screen.width * 0.2,
-    color: colors.lightBlack,
-  },
   contentWrapper: {
     flexDirection: "row",
     paddingTop: 20,
+    marginRight: 35,
+    justifyContent: "space-between",
   },
   expenseHeader: {
-    marginHorizontal: screen.width * 0.1,
-    paddingLeft: screen.width * 0.3,
+    paddingLeft: "44%",
+    textAlign: "center",
     fontSize: 20,
   },
   expenseValue: {
     fontSize: 32,
     marginTop: 60,
-    marginHorizontal: screen.width * 0.38,
-    width: screen.width * 0.9,
+    width: "100%",
+    textAlign: "center",
     fontWeight: "bold",
   },
   description: {
     color: colors.lightBlack,
     fontSize: 18,
-    marginHorizontal: screen.width * 0.38,
-    width: screen.width,
+    width: "100%",
+    textAlign: "center",
     marginTop: 40,
   },
   dateValue: {
     color: colors.lightBlack,
     fontSize: 14,
-    marginHorizontal: screen.width * 0.38,
-    width: screen.width * 0.7,
+    width: "100%",
+    textAlign: "center",
     marginTop: 20,
   },
   editButton: {
     color: colors.headerColor,
     fontSize: 18,
-    width: screen.width * 0.3,
-    marginHorizontal: screen.width * 0.4,
+    width: "100%",
+    textAlign: "center",
     marginTop: 60,
   },
   deleteButton: {
     color: colors.lightBlack,
     fontSize: 18,
-    marginHorizontal: screen.width * 0.4,
+    width: "100%",
+    textAlign: "center",
     marginTop: 30,
-    width: screen.width * 0.3,
   },
 });

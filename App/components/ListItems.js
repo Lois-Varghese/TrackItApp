@@ -1,18 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-} from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import colors from "../config/colors";
 import { AppContext } from "../util/AppContext";
 import { List } from "../common/List";
-import { convertToSectionDataFormat } from "../core/itemFunctions";
 import dayjs from "dayjs";
-
-const screen = Dimensions.get("window");
 
 export default function ListItems() {
   const {
@@ -22,10 +13,11 @@ export default function ListItems() {
     trackItInfo,
     parsedData,
     setParsedData,
+    convertToSectionDataFormat,
   } = useContext(AppContext);
 
   useEffect(() => {
-    setParsedData(convertToSectionDataFormat(trackItInfo));
+    setParsedData(convertToSectionDataFormat());
   }, [trackItInfo]);
 
   const dateTitle = (date) => {
@@ -36,37 +28,33 @@ export default function ListItems() {
 
   return (
     <View style={styles.container}>
-      {parsedData === null || parsedData === "[]" ? (
-        []
-      ) : (
-        <List
-          sections={parsedData}
-          keyExtractor={(_item, index) => index}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.title}>{dateTitle(title)}</Text>
-          )}
-          renderItem={({ item }) => (
-            <>
-              <TouchableOpacity
-                style={styles.listItem}
-                onPress={() => {
-                  setOpenModal(true), setModalType("view"), setListItem(item);
-                }}
-              >
-                <Text style={styles.itemText}>{item.desc}</Text>
-                <Text
-                  style={[
-                    styles.itemValue,
-                    {
-                      color: item.type === "Income" ? colors.green : colors.red,
-                    },
-                  ]}
-                >{`$${item.amount}`}</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        />
-      )}
+      <List
+        sections={parsedData}
+        keyExtractor={(_item, index) => index}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.title}>{dateTitle(title)}</Text>
+        )}
+        renderItem={({ item }) => (
+          <>
+            <TouchableOpacity
+              style={styles.listItem}
+              onPress={() => {
+                setOpenModal(true), setModalType("view"), setListItem(item);
+              }}
+            >
+              <Text style={styles.itemText}>{item.desc}</Text>
+              <Text
+                style={[
+                  styles.itemValue,
+                  {
+                    color: item.type === "Income" ? colors.green : colors.red,
+                  },
+                ]}
+              >{`$${item.amount}`}</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      />
     </View>
   );
 }
@@ -74,22 +62,22 @@ export default function ListItems() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.greyColor,
-    height: screen.height * 0.55,
-    width: screen.width,
+    flex: 1,
   },
   title: {
-    marginTop: 24,
+    marginTop: 18,
     color: colors.lightBlack,
     textAlign: "center",
   },
   listItem: {
     backgroundColor: colors.white,
-    width: screen.width * 0.9,
+    width: "90%",
     height: 48,
     marginTop: 10,
+    marginBottom: 12,
     flexDirection: "row",
     borderRadius: 8,
-    marginLeft: screen.width * 0.05,
+    marginLeft: "5%",
     alignItems: "center",
     justifyContent: "space-between",
   },
