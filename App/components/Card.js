@@ -1,16 +1,12 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import colors from "../config/colors";
 import LineSeparator from "../common/LineSeparator";
-import { calculateIncomeExpense } from "../core/itemFunctions";
 import { AppContext } from "../util/AppContext";
 
-const screen = Dimensions.get("window");
-
 export default function Card() {
-  const { trackItInfo } = useContext(AppContext);
-  const [totalIncome, totalExpense] =
-    trackItInfo === "[]" ? [0, 0] : calculateIncomeExpense(trackItInfo);
+  const { calculateIncomeExpense } = useContext(AppContext);
+  const [totalIncome, totalExpense] = calculateIncomeExpense();
 
   return (
     <View styles={styles.wrapper}>
@@ -41,22 +37,22 @@ const styles = StyleSheet.create({
   container: {
     borderColor: colors.lightGreyColor,
     borderWidth: 1,
-    width: screen.width * 0.9,
+    width: "90%",
     height: 128,
     marginTop: 14,
     marginBottom: 14,
     flexDirection: "row",
     borderRadius: 8,
-    marginLeft: screen.width * 0.05,
-    marginRight: screen.width * 0.05,
+    marginLeft: "5%",
+    marginRight: "5%",
   },
   innerContainer: {
-    width: screen.width * 0.4,
+    width: "45%",
     alignItems: "center",
     justifyContent: "center",
   },
   innerWrapper: {
-    width: screen.width * 0.5,
+    width: "57%",
     alignItems: "center",
     justifyContent: "center",
   },

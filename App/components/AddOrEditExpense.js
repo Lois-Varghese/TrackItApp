@@ -1,32 +1,22 @@
 import React, { useContext } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import colors from "../config/colors";
 import { AppContext } from "../util/AppContext";
 import Input from "../common/Input";
 import DatePicker from "../common/DatePicker";
+import Icon from "react-native-remix-icon";
 import dayjs from "dayjs";
-import { saveItem, editItem } from "../core/itemFunctions";
-
-const screen = Dimensions.get("window");
 
 export default function AddOrEditExpense() {
   const {
-    trackItInfo,
     showCalendar,
     setOpenCalendar,
     setOpenModal,
-    editId,
     formData,
     setFormData,
-    setTrackItInfo,
     modalType,
-    setParsedData,
+    saveItem,
+    editItem,
   } = useContext(AppContext);
 
   const setDate = (selectedDate) => {
@@ -66,9 +56,9 @@ export default function AddOrEditExpense() {
     }
 
     if (modalType === "add") {
-      saveItem({ formData, setTrackItInfo, trackItInfo });
+      saveItem();
     } else if (modalType === "edit") {
-      editItem(editId, formData, trackItInfo, setTrackItInfo, setParsedData);
+      editItem();
     }
     clearForm();
     setOpenModal(false);
@@ -97,7 +87,7 @@ export default function AddOrEditExpense() {
       <View style={styles.contentWrapper}>
         <Text style={styles.text}>{`${modalHeader} Income/Expense`}</Text>
         <TouchableOpacity onPress={() => onModalClose()}>
-          <Text style={styles.closeButton}>X</Text>
+          <Icon name="close-fill" size="30" color={colors.lightBlack} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonWrapper}>
@@ -197,20 +187,17 @@ export default function AddOrEditExpense() {
 }
 
 const styles = StyleSheet.create({
-  closeButton: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colors.lightBlack,
-    marginLeft: screen.width * 0.22,
-  },
   contentWrapper: {
     flexDirection: "row",
-    width: screen.width,
+    width: "100%",
     paddingTop: 20,
+    justifyContent: "space-between",
+    paddingLeft: 95,
+    paddingRight: 30,
   },
   text: {
     color: colors.lightBlack,
-    marginLeft: screen.width * 0.2,
+    width: "80%",
     fontSize: 18,
   },
   buttonWrapper: {
@@ -218,7 +205,7 @@ const styles = StyleSheet.create({
     width: 148,
     height: 40,
     marginTop: 30,
-    marginHorizontal: screen.width * 0.28,
+    marginHorizontal: 120,
   },
   incomeWrapper: {
     alignItems: "center",
@@ -235,7 +222,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
   },
   styleAdd: {
-    width: screen.width * 0.8,
+    width: "80%",
     borderRadius: 8,
     marginTop: 40,
     margin: 40,
@@ -247,20 +234,20 @@ const styles = StyleSheet.create({
   saveButton: {
     padding: 10,
     fontSize: 20,
-    marginLeft: screen.width * 0.4,
+    marginLeft: "40%",
   },
   dateStyle: {
-    marginLeft: screen.width * 0.07,
-    width: screen.width * 0.85,
+    marginLeft: "9%",
+    width: "85%",
     marginBottom: 40,
     backgroundColor: colors.white,
   },
   datePicker: {
     borderColor: colors.greyColor,
     padding: 10,
-    paddingLeft: 18,
-    marginLeft: screen.width * 0.1,
-    width: screen.width * 0.8,
+    marginLeft: 40,
+    paddingLeft: 20,
+    width: "80%",
     marginBottom: 32,
     borderRadius: 8,
     borderWidth: 1,

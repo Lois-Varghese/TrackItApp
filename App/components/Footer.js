@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import colors from "../config/colors";
 import { AppContext } from "../util/AppContext";
 import AppModal from "../common/Modal";
+import Icon from "react-native-remix-icon";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,13 +13,6 @@ const styles = StyleSheet.create({
     height: 56,
     width: 56,
     borderRadius: 20,
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  footerText: {
-    fontSize: 30,
-    color: colors.white,
-    fontWeight: "bold",
   },
 });
 
@@ -35,7 +29,7 @@ export default function Footer() {
             setOpenModal(true), setModalType("add");
           }}
         >
-          <Text style={styles.footerText}>+</Text>
+          <Icon name="add-fill" size="30" color={colors.white} />
         </TouchableOpacity>
       )}
     </>

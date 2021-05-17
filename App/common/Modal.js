@@ -1,19 +1,17 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, Modal, Dimensions } from "react-native";
+import { View, StyleSheet, Modal } from "react-native";
 import colors from "../config/colors";
 import { AppContext } from "../util/AppContext";
 import AddOrEditExpense from "../components/AddOrEditExpense";
 import ViewExpense from "../components/ViewExpense";
 
-const screen = Dimensions.get("window");
-
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: colors.white,
-    height: screen.height,
-    width: screen.width,
+    height: "100%",
+    width: "100%",
     borderRadius: 20,
-    marginTop: 72,
+    top: 70,
   },
 });
 
